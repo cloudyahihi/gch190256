@@ -38,7 +38,7 @@ app.post('/update',async (req,res)=>{
     var ObjectID = require('mongodb').ObjectID;
     let condition = {"_id":ObjectID(idInput)};  
 
-    let updateProduct ={$set : {productName : nameInput, price:priceInput}} ;
+    let updateProduct ={$set : {productName : nameInput, productImage : imageInput, price:priceInput}} ;
     await dbo.collection("products").updateOne(condition,updateProduct);
     res.redirect('/');
 })
@@ -77,9 +77,10 @@ app.post('/search',async (req,res)=>{
 app.post('/insert',async (req,res)=>{
     let client= await MongoClient.connect(url);
     let dbo = client.db("MyDatabase");
-    let nameInput = req.body.productName;
+    let nameInput = req.body.productName;    
+    let imageInput = req.body.productImage;
     let priceInput = req.body.price;
-    let newProduct = {productName : nameInput, price:priceInput};
+    let newProduct = {productName : nameInput, productImage : imageInput, price:priceInput};
     await dbo.collection("products").insertOne(newProduct);
    
     let results = await dbo.collection("products").find({}).toArray();
